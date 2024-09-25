@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Interaction Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+}
+
+h1 {
+  color: #333;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.output, .summary {
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.output {
+  width: 300px;
+  height: 300px;
+  overflow-y: auto;
+  text-align: left;
+}
+
+.summary {
+  width: 250px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin-bottom: 5px;
+}
+
+  </style>
+</head>
+<body>
+  <h1>User Interaction Tracker</h1>
+
+  <div class="container">
+    <div class="output" id="output">
+      <h3>Captured Movements</h3>
+      <ul id="movements"></ul>
+    </div>
+    <div class="summary">
+      <h3>Real-time Summary</h3>
+      <p id="mouse-coordinates">Mouse: (X, Y)</p>
+      <p id="key-press">Key Pressed: </p>
+      <p id="mouse-click">Last Click: </p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Select DOM elements
+const movementsList = document.getElementById('movements');
+const mouseCoordinates = document.getElementById('mouse-coordinates');
+const keyPress = document.getElementById('key-press');
+const mouseClick = document.getElementById('mouse-click');
+
+// Event listener for mouse movement
+document.addEventListener('mousemove', function(event) {
+  const x = event.clientX;
+  const y = event.clientY;
+  mouseCoordinates.innerText = `Mouse: (${x}, ${y})`;
+  
+  // Log the movement
+  const newItem = document.createElement('li');
+  newItem.innerText = `Mouse moved to (${x}, ${y})`;
+  movementsList.appendChild(newItem);
+});
+
+// Event listener for keyboard input
+document.addEventListener('keydown', function(event) {
+  keyPress.innerText = `Key Pressed: ${event.key}`;
+  
+  // Log the key press
+  const newItem = document.createElement('li');
+  newItem.innerText = `Key pressed: ${event.key}`;
+  movementsList.appendChild(newItem);
+});
+
+// Event listener for mouse click
+document.addEventListener('click', function(event) {
+  const x = event.clientX;
+  const y = event.clientY;
+  mouseClick.innerText = `Last Click: (${x}, ${y})`;
+  
+  // Log the mouse click
+  const newItem = document.createElement('li');
+  newItem.innerText = `Mouse clicked at (${x}, ${y})`;
+  movementsList.appendChild(newItem);
+});
+
+// Optional: Limit the number of recorded interactions to avoid performance issues
+function limitMovements(maxItems) {
+  while (movementsList.childNodes.length > maxItems) {
+    movementsList.removeChild(movementsList.firstChild);
+  }
+}
+
+setInterval(() => limitMovements(100), 1000);
+
+  </script>
+</body>
+</html>
